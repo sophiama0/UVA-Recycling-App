@@ -1,0 +1,1 @@
+web: gunicorn uva_recycling_app.wsgi
