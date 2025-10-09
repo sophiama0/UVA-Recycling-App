@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home</title>
+</head>
+<body>
+    {% if user.is_authenticated %}
+        <h1>Hi {{ user.socialaccount_set.all.0.extra_data.given_name|default:user.username }}</h1>
+        <p>You are logged in</p>
+        
+        <a href="{% url 'account_logout' %}">
+            <button>Log Out</button>
+        </a>
+    {% else %}
+        <h1>Welcome</h1>
+        <p>Please log in:</p>
+        
+        <a href="/accounts/google/login">
+            <button>Log In with Google</button>
+        </a>
+    {% endif %}
+</body>
+</html>
