@@ -1,0 +1,27 @@
+# Python bytecode
+*.pyc
+__pycache__/
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Django-specific files
+*.log
+*.pot
+db.sqlite3
+local_settings.py # Or any other local settings file not meant for production
+media/ # Directory for uploaded media files
+static/ # Directory for collected static files (if not managed by a build process)
+
+# IDE-specific files (e.g., PyCharm, VS Code)
+.idea/
+.vscode/
+
+# Operating system generated files
+.DS_Store
+Thumbs.db
+
+# Other common ignored files
+.env # Environment variable files
