@@ -1,0 +1,15 @@
+# This .gitignore added by Gayathri 10/11/2025, I added this because I didn't see another one and thought we needed one.
+
+# Ignore virtual environments
+venv/
+.venv/
+
+# Ignore Python cache files
+__pycache__/
+*.pyc
+
+# Ignore environment and IDE files
+.env
+*.env
+.vscode/
+.idea/
