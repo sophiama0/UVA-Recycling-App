@@ -1,6 +1,4 @@
-# This .gitignore added by Gayathri 10/11/2025, I added this because I didn't see another one and thought we needed one.
-
-# Ignore virtual environments
+# Ignore virtual environments, has both venv and .venv depending on how each person's virtual environment is named
 venv/
 .venv/
 
