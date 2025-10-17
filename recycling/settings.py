@@ -29,7 +29,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%%2@rfsy^nvw7c5!=3q)!r%*x^@rhhcjzw98ecnxc3db387d3o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','uva-recycling-app-54b8ef079363.herokuapp.com']
 
