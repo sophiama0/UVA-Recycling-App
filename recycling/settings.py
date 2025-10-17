@@ -172,4 +172,5 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-LOGIN_REDIRECT_URL = 'main:home'
+#LOGIN_REDIRECT_URL = 'main:home'
+LOGIN_REDIRECT_URL = 'dashboard'
