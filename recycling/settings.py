@@ -17,9 +17,17 @@ from pathlib import Path
 
 import dj_database_url
 import os
+import environ
+
+env = environ.Env(
+    DEBUG=(bool, False)
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# Take environment variables from .env file
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -29,8 +37,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%%2@rfsy^nvw7c5!=3q)!r%*x^@rhhcjzw98ecnxc3db387d3o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = os.getenv('DEBUG', 'False') == 'True'
-DEBUG = True
+DEBUG = env('DEBUG')
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','uva-recycling-app-54b8ef079363.herokuapp.com']
 
@@ -92,14 +99,11 @@ WSGI_APPLICATION = 'recycling.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
         conn_max_age=600,
         conn_health_checks=True,
-        ssl_require=True
+        ssl_require=not DEBUG
     ),
-    'local': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
 }
 
 
