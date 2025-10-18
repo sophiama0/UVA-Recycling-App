@@ -3,4 +3,4 @@ gunicorn
 django-heroku
 django-allauth
 requests
-jwt
+PyJWT
