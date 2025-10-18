@@ -29,7 +29,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%%2@rfsy^nvw7c5!=3q)!r%*x^@rhhcjzw98ecnxc3db387d3o'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False') == 'True'
+#DEBUG = os.getenv('DEBUG', 'False') == 'True'
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost','127.0.0.1','uva-recycling-app-54b8ef079363.herokuapp.com']
 
@@ -174,3 +175,4 @@ SOCIALACCOUNT_PROVIDERS = {
 
 #LOGIN_REDIRECT_URL = 'main:home'
 LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = '/'
