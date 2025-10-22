@@ -1,1 +1,1 @@
-web: gunicorn recycling.wsgi
+web: gunicorn recyclingsite.wsgi
