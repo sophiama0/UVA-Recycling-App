@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html>
-    <body>
-        <h1>Sign in with Google</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Continue</button>
-        </form>
-    </body>
-</html>
+{% extends "base_bootstrap.html" %}
+
+{% block content %}
+<h1>Sign in with Google</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Continue</button>
+</form>
+{% endblock %}
