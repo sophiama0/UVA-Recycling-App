@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 
-    'dashboard.apps.DashboardConfig'
+    'dashboard.apps.DashboardConfig',
+    'recycling_spots',
 ]
 
 MIDDLEWARE = [

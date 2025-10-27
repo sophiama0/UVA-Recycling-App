@@ -9,10 +9,14 @@
         {% if user.is_staff or user.is_superuser %}
             <a href="admin/"><button>Admin dashboard</button></a>
         {% endif %}
+
+        {# Add this line for the new button #}
+        <a href="{% url 'spot_list' %}" class="btn btn-primary">View Recycling Spots</a>
+
     </p>
     <a href="{% url 'account_logout' %}"><button>Log Out</button></a>
 {% else %}
     <p>You are not logged in</p>
-    <p><a href="accounts/google/login/"><button>Log in</button></a></p>
+    <p><a href="{% url 'account_login' %}"><button>Log in</button></a></p> {# Updated this to use url tag #}
 {% endif %}
 {% endblock %}

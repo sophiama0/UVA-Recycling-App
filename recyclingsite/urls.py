@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
+    path('', include('recycling_spots.urls')),
 ]
