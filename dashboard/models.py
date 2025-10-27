@@ -31,6 +31,15 @@ class UserProfile(models.Model):
         ).order_by('-usage_count').first()
         return most_used['recycling_bin'] if most_used else None
 
+    @property
+    def posted_bins_count(self):
+        return self.user.posted_bins.count()
+
+    def get_most_used_bin_name(self):
+        if self.most_used_bin_id:
+            return RecyclingBin.objects.get(id=self.most_used_bin_id).name
+        return None
+
 class BinUsage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='bin_usage')
     recycling_bin = models.ForeignKey(RecyclingBin, on_delete=models.CASCADE, related_name='usage_records')
