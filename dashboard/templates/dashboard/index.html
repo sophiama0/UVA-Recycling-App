@@ -1,5 +1,7 @@
 {% extends "base_bootstrap.html" %}
 
+{% load socialaccount %}
+
 {% block content %}
 <h1>Dashboard Page</h1>
 {% if user.is_authenticated %}
@@ -17,6 +19,10 @@
     <a href="{% url 'account_logout' %}"><button>Log Out</button></a>
 {% else %}
     <p>You are not logged in</p>
+<<<<<<< HEAD
     <p><a href="{% url 'account_login' %}"><button>Log in</button></a></p> {# Updated this to use url tag #}
+=======
+    <p><a href="{% provider_login_url 'google' %}"><button>Log in</button></a></p>
+>>>>>>> 18ea711e0fcfb999127d7474ba3ac505e1f11662
 {% endif %}
 {% endblock %}
