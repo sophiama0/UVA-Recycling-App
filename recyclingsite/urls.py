@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("accounts/", include("allauth.urls")),
     path('', include('recycling_spots.urls')),
+    path('messages/', include('messaging.urls')),
 ]
