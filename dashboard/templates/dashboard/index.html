@@ -15,6 +15,27 @@
         {# Add this line for the new button #}
         <a href="{% url 'spot_list' %}" class="btn btn-primary">View Recycling Spots</a>
 
+        {# messaging button #}
+
+        <a href = "{% url 'inbox' %}" class="btn btn-success">Messages Messages</a>
+    </p>
+    {% if bins %}
+        <h2>Recent Recycling Bins</h2>
+        {% for bin in bins %}
+            <div class="bin card p-2 my-2">
+                <h3>{{ bin.name }}</h3>
+                <p>Location: {{ bin.latitude }}, {{ bin.longitude }}</p>
+                <p>Posted by: {{ bin.posted_by.username }}</p>
+
+                {% if bin.posted_by != user %}
+                    <a href="{% url 'chat' username=bin.posted_by.username %}" class="btn btn-secondary">
+                        Message Message Author
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No bins have been added yet.</p>
     </p>
     <a href="{% url 'account_logout' %}"><button>Log Out</button></a>
 {% else %}
