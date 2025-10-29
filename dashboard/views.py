@@ -15,3 +15,13 @@ def profile(request):
 def home_view(request):
     bins = RecyclingBin.objects.all().order_by('-last_updated')
     return render(request, 'main/index.html', {'bins': bins})
+
+@login_required
+def inbox(request):
+    context = {}
+    return render(request, "dashboard/inbox.html", context)
+
+@login_required
+def chat(request, username):
+    context = {'username': username}
+    return render(request, 'dashboard/chat.html', context)
