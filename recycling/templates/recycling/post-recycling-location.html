@@ -1,0 +1,12 @@
+{% extends 'recycling/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1>Post a Recycling Location</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Post Location</button>
+    </form>
+</div>
+{% endblock %}

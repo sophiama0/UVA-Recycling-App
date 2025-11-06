@@ -1,0 +1,12 @@
+Django
+gunicorn
+django-heroku
+django-allauth
+requests
+PyJWT
+cryptography
+dj-database-url
+django-environ
+Pillow
+boto3
+django-storages

@@ -1,0 +1,60 @@
+{% extends 'recycling/base.html' %}
+
+{% block content %}
+<div class="container" style="margin-top: 15px;">
+  <div class="card shadow-sm mb-3">
+    {% if bin.image %}
+      <img src="{{ bin.image.url }}" class="card-img-top" alt="{{ bin.name }}">
+    {% else %}
+      <p class="card-text mt-2 text-muted">No image</p>
+    {% endif %}
+
+    <div class="card-body">
+        <h5 class="card-title mb-0">{{ bin.name }}</h5>
+        <p class="card-text text-muted small mb-0">
+            <i class="bi bi-geo-alt"></i>{{ bin.latitude }}, {{ bin.longitude }}
+        </p>
+
+        {% if bin.description %}
+            <p class="card-text mt-2">{{ bin.description }}</p>
+        {% else %}
+            <p class="card-text mt-2 text-muted">No description found</p>
+        {% endif %}
+
+        <p class="card-text mb-0"><strong>Fullness: </strong>{{ bin.fullness_percentage }}%</p>
+
+        <div class="mb-2">
+          <form method="post" action="{% url 'vote-bin' bin.id %}" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="vote_type" value="up">
+            <button type="submit" class="btn btn-sm {% if user_vote == 'up' %}btn-success{% else %}btn-outline-success{% endif %}">
+              <i class="bi {% if user_vote == 'up' %}bi-hand-thumbs-up-fill{% else %}bi-hand-thumbs-up{% endif %}"></i>
+              {{ bin.upvote_count }}
+            </button>
+          </form>
+
+          <form method="post" action="{% url 'vote-bin' bin.id %}" style="display: inline;">
+            {% csrf_token %}
+            <input type="hidden" name="vote_type" value="down">
+            <button type="submit" class="btn btn-sm {% if user_vote == 'down' %}btn-danger{% else %}btn-outline-danger{% endif %}">
+              <i class="bi {% if user_vote == 'down' %}bi-hand-thumbs-down-fill{% else %}bi-hand-thumbs-down{% endif %}"></i>
+              {{ bin.downvote_count }}
+            </button>
+          </form>
+        </div>
+
+        <p class="card-text text-muted small mb-0">
+          Posted by {{ bin.posted_by.username }} on {{ bin.created_at|date:"M d, Y"|default:"No date found" }}
+        </p>
+        <p class="card-text text-muted small mb-0">
+          Last updated by {{ bin.updated_by.username }} on {{ bin.updated_at|date:"M d, Y"|default:"No date found" }}
+        </p>
+    </div>
+  </div>
+  {% if user.is_authenticated %}
+    <a href="{% url 'update-recycling-location' bin.id %}" class="btn btn-warning mb-3">
+        Update Info
+    </a>
+  {% endif %}
+</div>
+{% endblock %}
