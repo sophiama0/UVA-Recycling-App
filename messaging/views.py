@@ -7,7 +7,7 @@ from .models import Message
 def inbox(request):
     # Show list of users the current user has chatted with
     users = User.objects.exclude(id=request.user.id)
-    return render(request, 'messaging/inbox.html', {'users': users})
+    return render(request, 'messaging/inbox.html', {'users': users, 'messages_active': 'active'})
 
 @login_required
 def chat(request, username):
@@ -23,4 +23,4 @@ def chat(request, username):
             Message.objects.create(sender=request.user, receiver=other_user, content=content)
             return redirect('chat', username=other_user.username)
 
-    return render(request, 'messaging/chat.html', {'other_user': other_user, 'messages': messages})
+    return render(request, 'messaging/chat.html', {'other_user': other_user, 'messages': messages, 'messages_active': 'active'})

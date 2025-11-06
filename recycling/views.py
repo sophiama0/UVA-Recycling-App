@@ -1,0 +1,131 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404, render, redirect
+from django.views.generic.detail import DetailView
+
+from .forms import ProfileImageForm, RecyclingBinForm, RecyclingBinUpdateForm, UserNameForm
+from .models import RecyclingBin, BinVote
+
+
+# Create your views here.
+def recycling_map(request):
+    bins = RecyclingBin.objects.all().order_by('-created_at')
+
+    user_votes = {}
+    if request.user.is_authenticated:
+        votes = BinVote.objects.filter(user=request.user)
+        user_votes = {vote.recycling_bin_id: vote.vote_type for vote in votes}
+
+    for bin in bins:
+        bin.user_vote = user_votes.get(bin.id)
+
+    context = {
+        'bins': bins,
+        'recycling_map_active': 'active',
+    }
+    return render(request, 'recycling/recycling-map.html', context)
+
+
+
+class RecyclingBinDetailView(DetailView):
+    model = RecyclingBin
+    template_name = 'recycling/recycling-bin-detail.html'
+    context_object_name = 'bin'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        bin = self.get_object()
+        if user.is_authenticated:
+            context['user_vote'] = bin.get_user_vote(user)
+        else:
+            context['user_vote'] = None
+        return context
+
+
+def vote_bin(request, pk):
+    if not request.user.is_authenticated:
+        messages.error(request, "You must be logged in to upvote or downvote a recycling location.")
+        return redirect('recycling-bin-detail', pk=pk)
+
+    bin = get_object_or_404(RecyclingBin, pk=pk)
+    vote_type = request.POST.get('vote_type')
+
+    vote, created = BinVote.objects.get_or_create(user=request.user, recycling_bin=bin)
+    if not created and vote.vote_type == vote_type:
+        vote.delete()
+    else:
+        vote.vote_type = vote_type
+        vote.save()
+
+    return redirect('recycling-bin-detail', pk=pk)
+
+
+def post_recycling_location(request):
+    if not request.user.is_authenticated:
+        messages.error(request, "You must be logged in to post a recycling location.")
+        return redirect('recycling-map')
+
+    if request.method == 'POST':
+        form = RecyclingBinForm(request.POST, request.FILES)
+        if form.is_valid():
+            bin = form.save(commit=False)
+            bin.posted_by = request.user
+            bin.updated_by = request.user
+            bin.save()
+            return redirect('recycling-map')
+    else:
+        form = RecyclingBinForm()
+
+    return render(request, 'recycling/post-recycling-location.html', {'form': form})
+
+
+@login_required
+def update_recycling_location(request, pk):
+    bin = get_object_or_404(RecyclingBin, pk=pk)
+
+    if request.method == 'POST':
+        form = RecyclingBinUpdateForm(request.POST, request.FILES, instance=bin, user=request.user)
+        if form.is_valid():
+            updated_bin = form.save(commit=False)
+            updated_bin.updated_by = request.user
+            updated_bin.save()
+            return redirect('recycling-bin-detail', pk=bin.pk)
+    else:
+        form = RecyclingBinUpdateForm(instance=bin, user=request.user)
+
+    return render(request, 'recycling/update-recycling-location.html', {'form': form, 'bin': bin})
+
+
+@login_required
+def profile(request):
+    return render(request, "recycling/profile.html", {'profile_active': 'active'})
+
+
+@login_required
+def settings(request):
+    profile = request.user.profile
+    user = request.user
+
+    if request.method == 'POST':
+        if 'update_name' in request.POST:
+            name_form = UserNameForm(request.POST, instance=user)
+            if name_form.is_valid():
+                name_form.save()
+                return redirect('settings')
+            image_form = ProfileImageForm(instance=profile)
+        elif 'update_image' in request.POST:
+            image_form = ProfileImageForm(request.POST, request.FILES, instance=profile)
+            if image_form.is_valid():
+                image_form.save()
+                return redirect('settings')
+            name_form = UserNameForm(instance=user)
+    else:
+        name_form = UserNameForm(instance=user)
+        image_form = ProfileImageForm(instance=profile)
+
+    context = {
+        'name_form': name_form,
+        'image_form': image_form,
+    }
+    return render(request, 'recycling/settings.html', context)

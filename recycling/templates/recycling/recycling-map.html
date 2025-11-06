@@ -1,0 +1,62 @@
+{% extends 'recycling/base.html' %}
+
+{% block content %}
+<div class="container" style="margin-top: 15px;">
+  <div class="row">
+    <div class="col-xs-12">
+      <h1>Recycling Map</h1>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-8">
+      <h2>Map</h2>
+      <!-- Map could go here -->
+    </div>
+
+    <div class="col-4">
+      <h2>Locations</h2>
+      <a href="{% url 'post-recycling-location' %}" class="btn btn-primary mb-3">
+        Post Recycling Location
+      </a>
+
+      {% for bin in bins %}
+        <a href="{% url 'recycling-bin-detail' bin.id %}" class="text-decoration-none text-reset">
+          <div class="card shadow-sm mb-3">
+            <div class="card-body">
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="card-title mb-0">{{ bin.name }}</h5>
+                <p class="card-text mb-0"><strong>Fullness: </strong> {{ bin.fullness_percentage }}%</p>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <p class="card-text text-muted small mb-0">
+                  <i class="bi bi-geo-alt"></i> {{ bin.latitude }}, {{ bin.longitude }}
+                </p>
+                <p class="card-text mb-0">
+                  <span class="text-success me-3">
+                    <i class="bi {% if bin.user_vote == 'up' %}bi-hand-thumbs-up-fill{% else %}bi-hand-thumbs-up{% endif %}"></i>
+                    {{ bin.upvote_count }}
+                  </span>
+                  <span class="text-danger">
+                    <i class="bi {% if bin.user_vote == 'down' %}bi-hand-thumbs-down-fill{% else %}bi-hand-thumbs-down{% endif %}"></i>
+                    {{ bin.downvote_count }}
+                  </span>
+                </p>
+
+              </div>
+
+            </div>
+          </div>
+        </a>
+      {% empty %}
+        <div class="alert alert-info" role="alert">
+          No recycling spots have been posted yet. Be the first!
+        </div>
+      {% endfor %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,1 +1,1 @@
-web: gunicorn recyclingsite.wsgi
+web: gunicorn project_b_04.wsgi

@@ -1,10 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Chat with {{ other_user.username }}</title>
-</head>
-<body>
-  <h1>Chat with {{ other_user.username }}</h1>
+{% extends 'recycling/base.html' %}
+
+{% block content %}
+<h1>Chat with {{ other_user.username }}</h1>
 
   <div>
     {% for msg in messages %}
@@ -17,5 +14,4 @@
     <input type="text" name="content" placeholder="Type your message..." required>
     <button type="submit">Send</button>
   </form>
-</body>
-</html>
+{% endblock %}

@@ -7,3 +7,6 @@ PyJWT
 cryptography
 dj-database-url
 django-environ
+Pillow
+boto3
+django-storages
