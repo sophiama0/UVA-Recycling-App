@@ -1,27 +1,60 @@
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
-from .models import RecyclingBin
+from recycling_spots.models import RecyclingSpot # Import your new model
 
-
-# Create your views here.
+@login_required
 def index(request):
-    return render(request, "dashboard/index.html")
+    """
+    View function for the main dashboard page.
+    """
+    posted_bins_count = RecyclingSpot.objects.filter(author=request.user).count()
+    
+    context = {
+        'display_name': request.user.first_name or request.user.username,
+        'posted_bins_count': posted_bins_count,
+    }
+    return render(request, 'dashboard/index.html', context)
 
 @login_required
 def profile(request):
-    return render(request, "dashboard/profile.html")
-
-@login_required
-def home_view(request):
-    bins = RecyclingBin.objects.all().order_by('-last_updated')
-    return render(request, 'main/index.html', {'bins': bins})
+    """
+    This is the original profile URL. We redirect it to the new one.
+    """
+    return redirect('dashboard:profile')
 
 @login_required
 def inbox(request):
-    context = {}
-    return render(request, "dashboard/inbox.html", context)
+    """
+    Placeholder view for the inbox.
+    """
+    # Add logic for your inbox here
+    return render(request, 'dashboard/index.html') # Placeholder template
 
 @login_required
 def chat(request, username):
-    context = {'username': username}
-    return render(request, 'dashboard/chat.html', context)
+    """
+    Placeholder view for the chat.
+    """
+    # Add logic for your chat here
+    context = {'chat_with_username': username}
+    return render(request, 'dashboard/index.html', context) # Placeholder template
+
+@login_required
+def profile_view(request):
+    """
+    View function for the new profile page.
+    """
+    posted_bins_count = RecyclingSpot.objects.filter(author=request.user).count()
+
+    times_recycled = "N/A"
+    bins_used = "N/A"
+    most_used = "N/A"
+
+    context = {
+        'posted_bins_count': posted_bins_count,
+        'times_recycled': times_recycled,
+        'bins_used': bins_used,
+        'most_used': most_used,
+        'display_name': request.user.first_name or request.user.username,
+    }
+    return render(request, 'dashboard/profile.html', context)
