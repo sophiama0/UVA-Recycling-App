@@ -22,7 +22,8 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env(DEBUG=(bool,False))
 
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+if os.path.exists(BASE_DIR / '.env'):
+    environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -33,7 +34,7 @@ SECRET_KEY = 'django-insecure-r13vrt8i3sr))jhgden-jp16%u7^otur=r)hmas^*z9fx!n%*f
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
+ALLOWED_HOSTS = ['localhost','127.0.0.1', 'uva-recycling-app-54b8ef079363.herokuapp.com']
 
 
 # Application definition
