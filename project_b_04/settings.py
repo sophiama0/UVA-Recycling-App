@@ -144,10 +144,16 @@ STATIC_URL = 'static/'
 
 
 # Media files (user uploads)
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-# MEDIA_URL = '/media/'
-MEDIA_URL = f"https://{env('AWS_STORAGE_BUCKET_NAME')}.s3.{env('AWS_S3_REGION_NAME', default='us-east-1')}.amazonaws.com/"
 
+AWS_STORAGE_BUCKET_NAME = env('AWS_STORAGE_BUCKET_NAME', default=None)
+AWS_S3_REGION_NAME = env('AWS_S3_REGION_NAME', default='us-east-1')
+
+if AWS_STORAGE_BUCKET_NAME:
+    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/"
+else:
+    # Default for local/test environments
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # Default primary key field type
@@ -175,20 +181,31 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 
 
 # AWS S3
-STORAGES = {
-    "default": {
-        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
-        "OPTIONS": {
-            "access_key": env('AWS_ACCESS_KEY_ID'),
-            "secret_key": env('AWS_SECRET_ACCESS_KEY'),
-            "bucket_name": env('AWS_STORAGE_BUCKET_NAME'),
-            "region_name": env('AWS_S3_REGION_NAME'),
+if AWS_STORAGE_BUCKET_NAME:
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+            "OPTIONS": {
+                "access_key": env('AWS_ACCESS_KEY_ID', default=''),
+                "secret_key": env('AWS_SECRET_ACCESS_KEY', default=''),
+                "bucket_name": AWS_STORAGE_BUCKET_NAME,
+                "region_name": AWS_S3_REGION_NAME,
+            },
         },
-    },
-    "staticfiles": {
-        "BACKEND":'whitenoise.storage.CompressedManifestStaticFilesStorage',
-    },
-}
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+else:
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {"location": MEDIA_ROOT},
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
 
 
 # Bootstrap
