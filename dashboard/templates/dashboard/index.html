@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>Dashboard Page</h1>
-{% if user.is_authenticated %}
+{% if user.is_authenticated%}
     <p>You are logged in as {{ display_name }}</p>
     <p>
         <a href="{% url 'account_profile' %}"><button>Profile</button></a>
@@ -15,18 +15,32 @@
         {# Add this line for the new button #}
         <a href="{% url 'spot_list' %}" class="btn btn-primary">View Recycling Spots</a>
 
+        {# messaging button #}
+
+        <a href = "{% url 'inbox' %}" class="btn btn-success">Messages Messages</a>
+    </p>
+    {% if bins %}
+        <h2>Recent Recycling Bins</h2>
+        {% for bin in bins %}
+            <div class="bin card p-2 my-2">
+                <h3>{{ bin.name }}</h3>
+                <p>Location: {{ bin.latitude }}, {{ bin.longitude }}</p>
+                <p>Posted by: {{ bin.posted_by.username }}</p>
+
+                {% if bin.posted_by != user %}
+                    <a href="{% url 'chat' username=bin.posted_by.username %}" class="btn btn-secondary">
+                        Message Message Author
+                    </a>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No bins have been added yet.</p>
     </p>
     <a href="{% url 'account_logout' %}"><button>Log Out</button></a>
-{% else %}
+{% endif %}
+    {% else %}
     <p>You are not logged in</p>
-<<<<<<< HEAD
-<<<<<<< HEAD
-    <p><a href="{% url 'account_login' %}"><button>Log in</button></a></p> {# Updated this to use url tag #}
-=======
     <p><a href="{% provider_login_url 'google' %}"><button>Log in</button></a></p>
->>>>>>> 18ea711e0fcfb999127d7474ba3ac505e1f11662
-=======
-    <p><a href="{% provider_login_url 'google' %}"><button>Log in</button></a></p>
->>>>>>> 81aeb193d4327c7b86e0d63862fd97f76b821b1c
 {% endif %}
 {% endblock %}

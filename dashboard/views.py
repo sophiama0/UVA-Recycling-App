@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from .models import RecyclingBin
+
 
 # Create your views here.
 def index(request):
@@ -8,3 +10,18 @@ def index(request):
 @login_required
 def profile(request):
     return render(request, "dashboard/profile.html")
+
+@login_required
+def home_view(request):
+    bins = RecyclingBin.objects.all().order_by('-last_updated')
+    return render(request, 'main/index.html', {'bins': bins})
+
+@login_required
+def inbox(request):
+    context = {}
+    return render(request, "dashboard/inbox.html", context)
+
+@login_required
+def chat(request, username):
+    context = {'username': username}
+    return render(request, 'dashboard/chat.html', context)

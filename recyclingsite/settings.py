@@ -52,6 +52,7 @@ INSTALLED_APPS = [
 
     'dashboard.apps.DashboardConfig',
     'recycling_spots',
+    'messaging',
 ]
 
 MIDDLEWARE = [
