@@ -31,11 +31,11 @@
             </div>
         </div>
         <div class="col-3">
-            <div class="card p-2 text-center">
+            <div class="card p-2 text-center h-100">
                 <p class="fw-bold">Most used recycling bin</p>
-                <div class="display-3">
+                <div class="display-3 h-100 d-flex align-items-center justify-content-center">
                     {% if user.profile.get_most_used_bin_name %}
-                    <p>{{ user.profile.get_most_used_bin_name }}</p>
+                    <p class="fs-2">{{ user.profile.get_most_used_bin_name }}</p>
                     {% else %}
                     <p>N/A</p>
                     {% endif %}

@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic.detail import DetailView
 
 from .forms import ProfileImageForm, RecyclingBinForm, RecyclingBinUpdateForm, UserNameForm
-from .models import RecyclingBin, BinVote
+from .models import RecyclingBin, BinVote, BinUsage
 
 
 # Create your views here.
@@ -38,6 +38,7 @@ class RecyclingBinDetailView(DetailView):
         bin = self.get_object()
         if user.is_authenticated:
             context['user_vote'] = bin.get_user_vote(user)
+            context['user_recycle_count'] = BinUsage.get_user_bin_usage_count(user, bin)
         else:
             context['user_vote'] = None
         return context
@@ -57,6 +58,21 @@ def vote_bin(request, pk):
     else:
         vote.vote_type = vote_type
         vote.save()
+
+    return redirect('recycling-bin-detail', pk=pk)
+
+
+@login_required
+def recycle_here(request, pk):
+    """Record that the current user recycled at bin `pk` and redirect back to the detail page."""
+    if request.method != 'POST':
+        return redirect('recycling-bin-detail', pk=pk)
+
+    bin = get_object_or_404(RecyclingBin, pk=pk)
+
+    BinUsage.objects.create(user=request.user, recycling_bin=bin)
+
+    messages.success(request, f"Thank you for recycling at {bin.name}!")
 
     return redirect('recycling-bin-detail', pk=pk)
 
