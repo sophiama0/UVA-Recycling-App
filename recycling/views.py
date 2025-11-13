@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic.detail import DetailView
 
-from .forms import ProfileImageForm, RecyclingBinForm, RecyclingBinUpdateForm, UserNameForm
+from .forms import ProfileImageForm, RecyclingBinForm, RecyclingBinUpdateForm, UserNameForm, RecyclingFullnessForm
 from .models import RecyclingBin, BinVote, BinUsage
 
 
@@ -76,6 +76,34 @@ def recycle_here(request, pk):
 
     return redirect('recycling-bin-detail', pk=pk)
 
+
+
+@login_required
+def update_fullness_after_recycle(request, pk):
+    """Show a form to update the bin fullness after the user indicates they recycled here.
+
+    On GET: create a BinUsage record (the user just recycled) and show the form with current value.
+    On POST: validate and save the fullness (as percent -> decimal 0..1), set updated_by, and redirect to recycling-map.
+    """
+    bin = get_object_or_404(RecyclingBin, pk=pk)
+
+    if request.method == 'POST':
+        form = RecyclingFullnessForm(request.POST)
+        if form.is_valid():
+            pct = form.cleaned_data['fullness_percent']
+            # convert percent to 0..1 decimal
+            bin.fullness = round((pct / 100), 2)
+            bin.updated_by = request.user
+            bin.save()
+            messages.success(request, f"Fullness updated for {bin.name}.")
+            return redirect('recycling-map')
+    else:
+        # create a BinUsage record when the user arrives here (they indicated they recycled)
+        BinUsage.objects.create(user=request.user, recycling_bin=bin)
+        initial_pct = bin.fullness * 100
+        form = RecyclingFullnessForm(initial={'fullness_percent': initial_pct})
+
+    return render(request, 'recycling/update-fullness.html', {'form': form, 'bin': bin})
 
 def post_recycling_location(request):
     if not request.user.is_authenticated:

@@ -46,10 +46,7 @@
 
         {% if user.is_authenticated %}
         <div class="mb-2">
-          <form method="post" action="{% url 'recycle-here' bin.id %}" style="display: inline;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary btn-sm">I recycled here</button>
-          </form>
+          <a href="{% url 'recycle-update-fullness' bin.id %}" class="btn btn-primary btn-sm">I recycled here</a>
         </div>
         {% endif %}
 
