@@ -11,4 +11,5 @@ urlpatterns = [
     path('bin/<int:pk>/recycle/', views.recycle_here, name='recycle-here'),
     path('profile/', views.profile, name='recycling-profile'),
     path('settings/', views.settings, name='settings'),
+    path("api/bins/", views.bin_locations, name="bin_locations"),
 ]

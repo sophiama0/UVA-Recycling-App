@@ -2,12 +2,28 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic.detail import DetailView
+from django.http import JsonResponse
 
 from .forms import ProfileImageForm, RecyclingBinForm, RecyclingBinUpdateForm, UserNameForm
 from .models import RecyclingBin, BinVote, BinUsage
 
 
 # Create your views here.
+def bin_locations(request):
+    bins = RecyclingBin.objects.all()
+    data = [
+        {
+            "id": b.id,
+            "name": b.name,
+            "description": b.description,
+            "lat": b.latitude,
+            "lng": b.longitude,
+        }
+        for b in bins
+    ]
+    return JsonResponse({"bins": data})
+
+
 def recycling_map(request):
     bins = RecyclingBin.objects.all().order_by('-created_at')
 
