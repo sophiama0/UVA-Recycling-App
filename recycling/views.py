@@ -3,12 +3,16 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic.detail import DetailView
 from django.http import JsonResponse
+from django.shortcuts import render
 
 from .forms import ProfileImageForm, RecyclingBinForm, RecyclingBinUpdateForm, UserNameForm
 from .models import RecyclingBin, BinVote, BinUsage
 
 
 # Create your views here.
+def map_page(request):
+    return render(request, "recycling/map.html")
+
 def bin_locations(request):
     bins = RecyclingBin.objects.all()
     data = [

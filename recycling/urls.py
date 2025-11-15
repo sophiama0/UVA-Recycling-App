@@ -12,4 +12,5 @@ urlpatterns = [
     path('profile/', views.profile, name='recycling-profile'),
     path('settings/', views.settings, name='settings'),
     path("api/bins/", views.bin_locations, name="bin_locations"),
+    path("map/", views.map_page, name="map"),
 ]
