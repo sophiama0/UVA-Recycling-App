@@ -20,12 +20,13 @@ def bin_locations(request):
             "id": b.id,
             "name": b.name,
             "description": b.description,
-            "lat": b.latitude,
-            "lng": b.longitude,
+            "latitude": float(b.latitude),
+            "longitude": float(b.longitude),
         }
         for b in bins
     ]
-    return JsonResponse({"bins": data})
+    return JsonResponse(data, safe=False)
+
 
 
 def recycling_map(request):

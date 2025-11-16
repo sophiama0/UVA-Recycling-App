@@ -13,48 +13,48 @@
       <h2>Map</h2>
       <!-- Map could go here -->
         <head>
-    <title>Recycling Bins Map</title>
+        <title>Recycling Bins Map</title>
 
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
+        <!-- Leaflet CSS -->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"/>
 
-    <style>
-        #map {
-            height: 600px;
-            width: 100%;
-        }
-    </style>
-</head>
-<body>
+        <style>
+            #map {
+                height: 600px;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
 
-<h1>Recycling Bins Near You</h1>
-<div id="map"></div>
+    <h1>Recycling Bins Near You</h1>
+    <div id="map"></div>
 
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
-<script>
-// Initialize map
-var map = L.map('map').setView([40.0, -95.0], 4);  // Default center (USA)
+    <script>
+    // Initialize map
+    var map = L.map('map').setView([38.033, -78.508], 14); // Charlottesville zoom
 
-// Tile layer using OpenStreetMap
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-}).addTo(map);
+    // Tile layer using OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+    }).addTo(map);
 
-// Fetch bin data from backend
-fetch("/bins/api/bins/")
-    .then(res => res.json())
-    .then(data => {
-        data.bins.forEach(bin => {
-            L.marker([bin.lat, bin.lng])
-                .addTo(map)
-                .bindPopup(`<b>${bin.name}</b><br>${bin.description}`);
+    // Fetch bin data from backend
+    fetch("/api/bins/")
+        .then(res => res.json())
+        .then(data => {
+            data.forEach(bin => {
+                L.marker([bin.latitude, bin.longitude])
+                    .addTo(map)
+                    .bindPopup(`<b>${bin.name}</b><br>${bin.description}`);
+            });
         });
-    });
 </script>
 
-</body>
+    </body>
     </div>
 
     <div class="col-4">
