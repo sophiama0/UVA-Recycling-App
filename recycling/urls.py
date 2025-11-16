@@ -9,6 +9,7 @@ urlpatterns = [
     path('bin/<int:pk>/', views.RecyclingBinDetailView.as_view(), name='recycling-bin-detail'),
     path('bin/<int:pk>/vote/', views.vote_bin, name='vote-bin'),
     path('bin/<int:pk>/recycle/', views.recycle_here, name='recycle-here'),
+    path('bin/<int:pk>/recycle/update-fullness/', views.update_fullness_after_recycle, name='recycle-update-fullness'),
     path('profile/', views.profile, name='recycling-profile'),
     path('settings/', views.settings, name='settings'),
     path("api/bins/", views.bin_locations, name="bin_locations"),
