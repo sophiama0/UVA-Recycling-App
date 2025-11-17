@@ -21,6 +21,6 @@ def chat(request, username):
         content = request.POST.get('content')
         if content:
             Message.objects.create(sender=request.user, receiver=other_user, content=content)
-            return redirect('chat', username=other_user.username)
+            return redirect('messaging:chat', username=other_user.username)
 
-    return render(request, 'messaging/chat.html', {'other_user': other_user, 'messages': messages, 'messages_active': 'active'})
+    return render(request, 'messaging/chat.html', {'other_user': other_user, 'chat_messages': messages, 'messages_active': 'active'})
