@@ -57,5 +57,28 @@
             </div>
         </div>
     </div>
+    <div class="row py-3">
+    <div class="col-6">
+        <div class="card p-3 h-100">
+            <h4 class="fw-bold">Bio</h4>
+            {% if user.profile.bio %}
+                <p>{{ user.profile.bio }}</p>
+            {% else %}
+                <p class="text-muted">You haven't added a bio yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="col-6">
+        <div class="card p-3 h-100">
+            <h4 class="fw-bold">Sustainability Interests</h4>
+            {% if user.profile.sustainability_interests %}
+                <p>{{ user.profile.sustainability_interests }}</p>
+            {% else %}
+                <p class="text-muted">You haven't added any sustainability interests.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 
 {% endblock %}
