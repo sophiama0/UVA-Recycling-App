@@ -62,6 +62,14 @@ class ProfileBioForm(forms.ModelForm):
             'bio': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Write something about yourself...'}),
         }
 
+class ProfileSustainabilityInterests(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['sustainability_interests']
+        widgets = {
+            'sustainability_interests': forms.Textarea(attrs={'rows': 2, 'placeholder': 'What are your intentions for sustainability?'})
+        }
+
 
 class RecyclingFullnessForm(forms.Form):
     """Accepts fullness as a percentage (0-100)."""

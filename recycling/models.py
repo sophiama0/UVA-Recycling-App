@@ -76,6 +76,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     image = models.ImageField(default='profile_pics/default.png', upload_to='profile_pics')
     bio = models.TextField(blank=True, default = "")
+    sustainability_interests = models.TextField(blank=True, default="")
 
     @property
     def total_bins_used(self):

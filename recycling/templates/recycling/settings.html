@@ -16,12 +16,21 @@
         {{ name_form.as_p }}
         <button type="submit" name="update_name" class="btn btn-primary">Update Name</button>
     </form>
-    <h3>Edit Bio</h3>
+    <h2>Edit Bio</h2>
     <form method="POST">
         {% csrf_token%}
         {{ bio_form.as_p}}
         <button type = "submit" name="update_bio" class = "btn btn-primary">
             Save Bio
+        </button>
+    </form>
+    <hr>
+    <h2> Edit Your Sustainability Interests </h2>
+    <form method="POST">
+        {% csrf_token%}
+        {{sustainability_form.as_p}}
+        <button type = "submit" name = "update_sustainability_interests" class = "btn btn-primary">
+            Save Sustainability Interests
         </button>
     </form>
     <hr>
