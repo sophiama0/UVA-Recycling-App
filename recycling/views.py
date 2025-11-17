@@ -5,7 +5,7 @@ from django.views.generic.detail import DetailView
 from django.http import JsonResponse
 from django.shortcuts import render
 
-from .forms import ProfileImageForm, RecyclingBinForm, RecyclingBinUpdateForm, UserNameForm, RecyclingFullnessForm
+from .forms import ProfileImageForm, RecyclingBinForm, RecyclingBinUpdateForm, UserNameForm, RecyclingFullnessForm, ProfileBioForm
 from .models import RecyclingBin, BinVote, BinUsage
 
 
@@ -185,12 +185,19 @@ def settings(request):
                 image_form.save()
                 return redirect('settings')
             name_form = UserNameForm(instance=user)
+        elif 'update_bio' in request.POST:
+            bio_form = ProfileBioForm(request.POST, instance=profile)
+            if bio_form.is_valid():
+                bio_form.save()
+                return redirect('settings')
     else:
         name_form = UserNameForm(instance=user)
         image_form = ProfileImageForm(instance=profile)
+        bio_form = ProfileBioForm(instance=profile)
 
     context = {
         'name_form': name_form,
         'image_form': image_form,
+        'bio_form': bio_form,
     }
     return render(request, 'recycling/settings.html', context)

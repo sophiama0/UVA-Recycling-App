@@ -16,4 +16,13 @@
         {{ name_form.as_p }}
         <button type="submit" name="update_name" class="btn btn-primary">Update Name</button>
     </form>
+    <h3>Edit Bio</h3>
+    <form method="POST">
+        {% csrf_token%}
+        {{ bio_form.as_p}}
+        <button type = "submit" name="update_bio" class = "btn btn-primary">
+            Save Bio
+        </button>
+    </form>
+    <hr>
 {% endblock %}

@@ -54,6 +54,14 @@ class UserNameForm(forms.ModelForm):
             'first_name': forms.TextInput(attrs={'class': 'form-control'})
         }
 
+class ProfileBioForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['bio']
+        widgets = {
+            'bio': forms.Textarea(attrs={'rows': 4, 'placeholder': 'Write something about yourself...'}),
+        }
+
 
 class RecyclingFullnessForm(forms.Form):
     """Accepts fullness as a percentage (0-100)."""
