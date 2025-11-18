@@ -1,17 +1,95 @@
 {% extends 'recycling/base.html' %}
 
 {% block content %}
-<h1>Chat with {{ other_user.username }}</h1>
+<div class="container mt-4">
+  <h1>
+    Chat with {{ other_user.first_name }}
+    <span class="text-muted">#{{ other_user.id }}</span>
+  </h1>
 
-  <div>
+  <div id="chat-box" class="border rounded p-3 mb-3 overflow-auto" style="height: 400px;">
     {% for msg in chat_messages %}
-      <p><strong>{{ msg.sender.username }}:</strong> {{ msg.content }} <em>{{ msg.timestamp }}</em></p>
+      {% if msg.sender == user %}
+        <div class="mb-2 d-flex justify-content-end">
+          <div>
+            <p class="mb-1 text-end">{{ msg.content }}</p>
+            <p class="mb-0 text-muted small text-end">{{ msg.timestamp|date:"H:i:s" }}</p>
+          </div>
+        </div>
+      {% else %}
+        <div class="mb-2 d-flex justify-content-start">
+          <div>
+            <p class="mb-1"><strong>{{ msg.sender.first_name }}:</strong> {{ msg.content }}</p>
+            <p class="mb-0 text-muted small">{{ msg.timestamp|date:"H:i:s" }}</p>
+          </div>
+        </div>
+      {% endif %}
     {% endfor %}
   </div>
 
-  <form method="POST">
+  <form id="message-form" method="POST">
     {% csrf_token %}
-    <input type="text" name="content" placeholder="Type your message..." required>
-    <button type="submit">Send</button>
+    <input type="text" name="content" id="message-input" placeholder="Type your message..." required class="form-control mb-2" autocomplete="false">
+    <button type="submit" class="btn btn-primary">Send</button>
   </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function() {
+  // Track how many messages are already displayed
+  let lastMessageCount = {{ chat_messages|length }};
+
+  function loadMessages() {
+    $.get("{% url 'messaging:chat_messages_api' other_user.first_name other_user.id %}", function(response) {
+      const chatBox = $("#chat-box");
+
+      // Check if user is at the bottom (or near bottom)
+      const isAtBottom = chatBox.scrollTop() + chatBox.innerHeight() >= chatBox[0].scrollHeight - 50;
+
+      // Append only new messages
+      for (let i = lastMessageCount; i < response.messages.length; i++) {
+        const msg = response.messages[i];
+        const isCurrentUser = msg.sender_id == {{ user.id }};
+        const alignment = isCurrentUser ? "text-end" : "text-start";
+        const nameHTML = isCurrentUser ? "" : `<strong>${msg.sender_first_name}:</strong> `;
+
+        chatBox.append(`
+          <div class="mb-2 d-flex ${isCurrentUser ? 'justify-content-end' : 'justify-content-start'}">
+            <div>
+              <p class="mb-1 ${alignment}">${nameHTML}${msg.content}</p>
+              <p class="mb-0 text-muted small ${alignment}">${msg.timestamp}</p>
+            </div>
+          </div>
+        `);
+      }
+
+      lastMessageCount = response.messages.length;
+
+      if (isAtBottom) {
+        chatBox.scrollTop(chatBox.prop("scrollHeight"));
+      }
+    });
+  }
+
+  loadMessages();
+  setInterval(loadMessages, 2000);
+
+  $("#message-form").submit(function(e) {
+    e.preventDefault();
+    const content = $("#message-input").val().trim();
+    if (!content) return;
+
+    $.post("{% url 'messaging:chat' other_user.first_name other_user.id  %}", {
+      content: content,
+      csrfmiddlewaretoken: "{{ csrf_token }}"
+    }, function() {
+      $("#message-input").val("");
+      loadMessages();
+    });
+  });
+});
+</script>
+
 {% endblock %}

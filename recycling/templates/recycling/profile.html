@@ -1,7 +1,10 @@
 {% extends 'recycling/base.html' %}
 
 {% block content %}
-    <h1>Profile Page of {{ user.first_name }}</h1>
+    <h1>
+        Profile Page of {{ user.first_name }}
+        <span class="text-muted">#{{ user.id }}</span>
+    </h1>
     <img src="{{ user.profile.image.url }}" alt="Profile picture" class="rounded-circle" width="150" height="150">
     <div class="row py-3">
         <div class="col-3">
