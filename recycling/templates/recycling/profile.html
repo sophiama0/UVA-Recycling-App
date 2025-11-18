@@ -1,18 +1,28 @@
 {% extends 'recycling/base.html' %}
 
 {% block content %}
+<div class="container">
     <h1>
-        Profile Page of {{ user.first_name }}
-        <span class="text-muted">#{{ user.id }}</span>
+        Profile Page of {{ profile_user.first_name }}
+        <span class="text-muted">#{{ profile_user.id }}</span>
     </h1>
-    <img src="{{ user.profile.image.url }}" alt="Profile picture" class="rounded-circle" width="150" height="150">
+    <img src="{{ profile_user.profile.image.url }}" alt="Profile picture" class="rounded-circle" width="150" height="150">
+
+    {% if user != profile_user %}
+    <div class="my-3">
+        <a href="{% url 'messaging:chat' first_name=profile_user.first_name user_id=profile_user.id %}" class="btn btn-primary">
+            Send Message
+        </a>
+    </div>
+    {% endif %}
+
     <div class="row py-3">
         <div class="col-3">
             <div class="card p-2 text-center">
-                <p class="fw-bold">Number of times you have recycled</p>
+                <p class="fw-bold">Number of times they have recycled</p>
                 <div class="display-3">
-                    {% if user.profile.most_used_bin_id %}
-                    <p>{{ user.profile.total_usage_count }}</p>
+                    {% if profile_user.profile.total_usage_count %}
+                    <p>{{ profile_user.profile.total_usage_count }}</p>
                     {% else %}
                     <p>N/A</p>
                     {% endif %}
@@ -24,64 +34,64 @@
             <div class="card p-2 text-center">
                 <p class="fw-bold">Number of recycling bins used</p>
                 <div class="display-3">
-                    {% if user.profile.total_bins_used %}
-                    <p>{{ user.profile.total_bins_used }}</p>
+                    {% if profile_user.profile.total_bins_used %}
+                    <p>{{ profile_user.profile.total_bins_used }}</p>
                     {% else %}
                     <p>N/A</p>
                     {% endif %}
                 </div>
-                <p class="text-muted">Unique bins you've recycled at</p>
+                <p class="text-muted">Unique bins they've recycled at</p>
             </div>
         </div>
         <div class="col-3">
             <div class="card p-2 text-center h-100">
                 <p class="fw-bold">Most used recycling bin</p>
                 <div class="display-3 h-100 d-flex align-items-center justify-content-center">
-                    {% if user.profile.get_most_used_bin_name %}
-                    <p class="fs-2">{{ user.profile.get_most_used_bin_name }}</p>
+                    {% if profile_user.profile.get_most_used_bin_name %}
+                    <p class="fs-2">{{ profile_user.profile.get_most_used_bin_name }}</p>
                     {% else %}
                     <p>N/A</p>
                     {% endif %}
                 </div>
-                <p class="text-muted">Your favorite recycling spot</p>
+                <p class="text-muted">Their favorite recycling spot</p>
             </div>
         </div>
         <div class="col-3">
             <div class="card p-2 text-center">
                 <p class="fw-bold">Number of posted recycling bins</p>
                 <div class="display-3">
-                    {% if user.profile.posted_bins_count %}
-                    <p>{{ user.profile.posted_bins_count }}</p>
+                    {% if profile_user.profile.posted_bins_count %}
+                    <p>{{ profile_user.profile.posted_bins_count }}</p>
                     {% else %}
                     <p>N/A</p>
                     {% endif %}
                 </div>
-                <p class="text-muted">Bins you've added to the map</p>
+                <p class="text-muted">Bins they've added to the map</p>
             </div>
         </div>
     </div>
     <div class="row py-3">
-    <div class="col-6">
-        <div class="card p-3 h-100">
-            <h4 class="fw-bold">Bio</h4>
-            {% if user.profile.bio %}
-                <p>{{ user.profile.bio }}</p>
-            {% else %}
-                <p class="text-muted">You haven't added a bio yet.</p>
-            {% endif %}
+        <div class="col-6">
+            <div class="card p-3 h-100">
+                <h4 class="fw-bold">Bio</h4>
+                {% if profile_user.profile.bio %}
+                    <p>{{ profile_user.profile.bio }}</p>
+                {% else %}
+                    <p class="text-muted">They haven't added a bio yet.</p>
+                {% endif %}
+            </div>
         </div>
-    </div>
 
-    <div class="col-6">
-        <div class="card p-3 h-100">
-            <h4 class="fw-bold">Sustainability Interests</h4>
-            {% if user.profile.sustainability_interests %}
-                <p>{{ user.profile.sustainability_interests }}</p>
-            {% else %}
-                <p class="text-muted">You haven't added any sustainability interests.</p>
-            {% endif %}
+        <div class="col-6">
+            <div class="card p-3 h-100">
+                <h4 class="fw-bold">Sustainability Interests</h4>
+                {% if profile_user.profile.sustainability_interests %}
+                    <p>{{ profile_user.profile.sustainability_interests }}</p>
+                {% else %}
+                    <p class="text-muted">They haven't added any sustainability interests.</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
-
 {% endblock %}

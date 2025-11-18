@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.generic.detail import DetailView
 from django.http import JsonResponse
@@ -83,6 +84,16 @@ def vote_bin(request, pk):
     return redirect('recycling-bin-detail', pk=pk)
 
 
+def community(request):
+    users = User.objects.exclude(id=request.user.id)
+    context = {
+        'other_users': users,
+        'community_active': 'active'
+    }
+
+    return render(request, 'recycling/community.html', context)
+
+
 @login_required
 def recycle_here(request, pk):
     """Record that the current user recycled at bin `pk` and redirect back to the detail page."""
@@ -126,6 +137,7 @@ def update_fullness_after_recycle(request, pk):
 
     return render(request, 'recycling/update-fullness.html', {'form': form, 'bin': bin})
 
+
 def post_recycling_location(request):
     if not request.user.is_authenticated:
         messages.error(request, "You must be logged in to post a recycling location.")
@@ -163,8 +175,15 @@ def update_recycling_location(request, pk):
 
 
 @login_required
-def profile(request):
-    return render(request, "recycling/profile.html", {'profile_active': 'active'})
+def profile(request, first_name, user_id):
+    user_obj = get_object_or_404(User, id=user_id, first_name=first_name)
+
+    context = {
+        'profile_user': user_obj,
+        'profile_active': 'active'
+        }
+
+    return render(request, "recycling/profile.html", context)
 
 
 @login_required

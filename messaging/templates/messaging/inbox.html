@@ -2,34 +2,31 @@
 
 {% block content %}
 <div class="container mt-4">
-  <h1>Inbox</h1>
+    <h1>Inbox</h1>
 
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    {% for chat in user_chats %}
-      <div class="col">
-        <a href="{% url 'messaging:chat' chat.user.first_name chat.user.id %}" class="text-decoration-none">
-          <div class="card h-100">
-            <div class="card-body">
-              <h5 class="card-title">
-                <img src="{{ chat.user.profile.image.url }}" alt="Profile picture" class="rounded-circle" width="35" height="35">
-                {{ chat.user.first_name }}
-                <span class="text-muted">#{{ chat.user.id}}</span>
-              </h5>
-              <div class="d-flex justify-content-between align-items-center">
-                <span class="text-truncate" style="max-width: 70%;">
-                  {% if chat.last_message %}
-                    {{ chat.last_message|truncatechars:50 }}
-                    <small class="text-muted ms-2">{{ chat.last_timestamp|date:"M d, H:i" }}</small>
-                  {% else %}
-                    No messages yet.
-                  {% endif %}
-                </span>
-              </div>
+    {% if user_chats %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for chat in user_chats %}
+            <div class="col">
+                <a href="{% url 'messaging:chat' chat.user.first_name chat.user.id %}" class="text-decoration-none">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                {{ chat.user.first_name }}
+                                <span class="text-muted">#{{ chat.user.id }}</span>
+                            </h5>
+                            <p class="card-text">{{ chat.last_message }}</p>
+                            {% if chat.last_timestamp %}
+                                <p class="text-muted small">{{ chat.last_timestamp|date:"M d, Y H:i" }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
             </div>
-          </div>
-        </a>
-      </div>
-    {% endfor %}
-  </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted">You have no chats yet.</p>
+    {% endif %}
 </div>
 {% endblock %}

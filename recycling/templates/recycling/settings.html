@@ -1,6 +1,7 @@
 {% extends 'recycling/base.html' %}
 
 {% block content %}
+<div class="container">
     <h2>Update Profile</h2>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -34,4 +35,5 @@
         </button>
     </form>
     <hr>
+</div>
 {% endblock %}

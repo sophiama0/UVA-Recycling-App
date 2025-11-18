@@ -6,25 +6,54 @@ from django.contrib.auth.models import User
 from .models import Message
 
 
+# @login_required
+# def inbox(request):
+#     users = User.objects.exclude(id=request.user.id)
+#     user_chats = []
+
+#     for user in users:
+#         last_message = Message.objects.filter(
+#             Q(sender=request.user, receiver=user) | Q(sender=user, receiver=request.user)
+#         ).order_by('-timestamp').first()
+
+#         user_chats.append(
+#             {
+#                 'user': user,
+#                 'last_message': last_message.content if last_message else '',
+#                 'last_timestamp': last_message.timestamp if last_message else None
+#             }
+#         )
+
+#     return render(request, 'messaging/inbox.html', {'user_chats': user_chats, 'messages_active': 'active'})
+
 @login_required
 def inbox(request):
-    users = User.objects.exclude(id=request.user.id)
-    user_chats = []
+    # Get all users that have exchanged messages with the current user
+    user_ids_with_messages = Message.objects.filter(
+        Q(sender=request.user) | Q(receiver=request.user)
+    ).values_list('sender', 'receiver')
 
-    for user in users:
+    # Flatten the list of tuples and remove the current user's ID
+    user_ids = set([uid for pair in user_ids_with_messages for uid in pair if uid != request.user.id])
+
+    users_with_messages = User.objects.filter(id__in=user_ids)
+
+    user_chats = []
+    for user in users_with_messages:
         last_message = Message.objects.filter(
             Q(sender=request.user, receiver=user) | Q(sender=user, receiver=request.user)
         ).order_by('-timestamp').first()
 
-        user_chats.append(
-            {
-                'user': user,
-                'last_message': last_message.content if last_message else '',
-                'last_timestamp': last_message.timestamp if last_message else None
-            }
-        )
+        user_chats.append({
+            'user': user,
+            'last_message': last_message.content if last_message else '',
+            'last_timestamp': last_message.timestamp if last_message else None
+        })
 
-    return render(request, 'messaging/inbox.html', {'user_chats': user_chats, 'messages_active': 'active'})
+    return render(request, 'messaging/inbox.html', {
+        'user_chats': user_chats,
+        'messages_active': 'active'
+    })
 
 
 @login_required

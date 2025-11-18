@@ -29,7 +29,7 @@
 
   <form id="message-form" method="POST">
     {% csrf_token %}
-    <input type="text" name="content" id="message-input" placeholder="Type your message..." required class="form-control mb-2" autocomplete="false">
+    <input type="text" name="content" id="message-input" placeholder="Type your message..." required class="form-control mb-2" autocomplete="off">
     <button type="submit" class="btn btn-primary">Send</button>
   </form>
 </div>

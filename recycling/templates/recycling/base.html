@@ -29,9 +29,12 @@
                         <li class="nav-item">
                         <a class="nav-link {{ recycling_map_active }}" aria-current="page" href="{% url 'recycling-map' %}">Recycling Map</a>
                         </li>
+                        <li class="nav-item">
+                        <a class="nav-link {{ community_active }}" href="{% url 'community' %}">Community</a>
+                        </li>
                         {% if user.is_authenticated %}
                             <li class="nav-item">
-                            <a class="nav-link {{ profile_active }}" href="{% url 'recycling-profile' %}">Profile</a>
+                            <a class="nav-link {{ profile_active }}" href="{% url 'recycling-profile' first_name=user.first_name user_id=user.id %}">Profile</a>
                             </li>
                             <li class="nav-item">
                             <a class="nav-link {{ messages_active }}" href="{% url 'messaging:inbox' %}">Messages</a>

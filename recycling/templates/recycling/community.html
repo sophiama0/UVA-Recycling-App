@@ -1,0 +1,27 @@
+{% extends 'recycling/base.html' %}
+
+{% block content %}
+<div class="container">
+  <h1>Community</h1>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for other_user in other_users %}
+        <div class="col">
+            <a href="{% url 'recycling-profile' first_name=other_user.first_name user_id=other_user.id %}" class="text-decoration-none text-dark d-block h-100">
+                <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <img src="{{ other_user.profile.image.url }}" alt="Profile picture" class="rounded-circle me-2" width="35" height="35">
+                        {{ other_user.first_name }}
+                        <span class="text-muted">#{{ other_user.id }}</span>
+                    </h5>
+                    <p class="card-text">
+                        Total Recycled: {{ other_user.profile.total_usage_count }}
+                    </p>
+                </div>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
