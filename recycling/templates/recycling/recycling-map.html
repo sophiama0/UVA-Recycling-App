@@ -31,6 +31,29 @@
     // Initialize map
     var map = L.map('map').setView([38.033, -78.508], 14); // Charlottesville zoom
 
+    // Try to get user's location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (pos) {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+
+                // Move map to user location
+                map.setView([lat, lng], 16);
+
+                // Optional: show a marker for “You are here”
+                L.marker([lat, lng], { title: "Your Location" })
+                    .addTo(map)
+                    .bindPopup("You are here")
+                    .openPopup();
+            },
+            function (err) {
+                console.warn("User denied location or error:", err);
+                // Keep the map at default Charlottesville center
+            }
+        );
+    }
+
     // Tile layer using OpenStreetMap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
