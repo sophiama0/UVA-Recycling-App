@@ -2,15 +2,9 @@
 
 {% block content %}
 <div class="container" style="margin-top: 15px;">
-  <div class="row">
-    <div class="col-xs-12">
-      <h1>Recycling Map</h1>
-    </div>
-  </div>
 
   <div class="row">
     <div class="col-8">
-      <h2>Map</h2>
       <!-- Map could go here -->
         <head>
         <title>Recycling Bins Map</title>
@@ -46,11 +40,13 @@
     fetch("/api/bins/")
         .then(res => res.json())
         .then(data => {
-            data.forEach(bin => {
-                L.marker([bin.latitude, bin.longitude])
-                    .addTo(map)
-                    .bindPopup(`<b>${bin.name}</b><br>${bin.description}`);
-            });
+          data.forEach(bin => {
+            // popup contains a link to the recycling bin detail page
+            const popupHtml = `<a href="/bin/${bin.id}/" class="text-decoration-none"><strong>${bin.name}</strong></a><br>${bin.description || ''}`;
+            L.marker([bin.latitude, bin.longitude])
+              .addTo(map)
+              .bindPopup(popupHtml);
+          });
         });
 </script>
 
@@ -58,7 +54,7 @@
     </div>
 
     <div class="col-4">
-      <h2>Locations</h2>
+      <h1>Locations</h1>
       <a href="{% url 'post-recycling-location' %}" class="btn btn-primary mb-3">
         Post Recycling Location
       </a>
