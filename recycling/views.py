@@ -138,6 +138,29 @@ def update_fullness_after_recycle(request, pk):
     return render(request, 'recycling/update-fullness.html', {'form': form, 'bin': bin})
 
 
+
+@login_required
+def delete_bin_confirm(request, pk):
+    """Confirm and delete a RecyclingBin. Only allowed for staff, superusers, or the user who posted the bin."""
+    bin = get_object_or_404(RecyclingBin, pk=pk)
+
+    user = request.user
+    allowed = user.is_authenticated and (user.is_staff or user.is_superuser or bin.posted_by == user)
+    if not allowed:
+        messages.error(request, "You do not have permission to delete this bin.")
+        return redirect('recycling-bin-detail', pk=pk)
+
+    if request.method == 'POST':
+        # delete the bin (related votes/usages are cascade-deleted)
+        bin_name = bin.name
+        bin.delete()
+        messages.success(request, f"{bin_name} has been deleted.")
+        return redirect('recycling-map')
+
+    # GET: show confirmation page
+    return render(request, 'recycling/delete-confirm.html', {'bin': bin})
+
+
 def post_recycling_location(request):
     if not request.user.is_authenticated:
         messages.error(request, "You must be logged in to post a recycling location.")

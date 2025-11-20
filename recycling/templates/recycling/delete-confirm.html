@@ -1,0 +1,18 @@
+{% extends 'recycling/base.html' %}
+
+{% block content %}
+<div class="container" style="margin-top: 15px; max-width: 600px;">
+  <div class="card shadow-sm">
+    <div class="card-body text-center">
+      <h5 class="card-title">Delete {{ bin.name }}?</h5>
+      <p class="card-text text-muted">This action cannot be undone. All votes and usage records related to this bin will be removed.</p>
+
+      <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Delete bin</button>
+        <a href="{% url 'recycling-bin-detail' bin.id %}" class="btn btn-secondary ms-2">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

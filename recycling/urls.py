@@ -10,6 +10,7 @@ urlpatterns = [
     path('bin/<int:pk>/vote/', views.vote_bin, name='vote-bin'),
     path('bin/<int:pk>/recycle/', views.recycle_here, name='recycle-here'),
     path('bin/<int:pk>/recycle/update-fullness/', views.update_fullness_after_recycle, name='recycle-update-fullness'),
+    path('bin/<int:pk>/delete/', views.delete_bin_confirm, name='delete-bin'),
     path('community/', views.community, name='community'),
     path('profile/<str:first_name>_<int:user_id>', views.profile, name='recycling-profile'),
     path('settings/', views.settings, name='settings'),
