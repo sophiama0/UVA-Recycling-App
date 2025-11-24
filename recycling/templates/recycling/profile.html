@@ -6,38 +6,50 @@
         Profile Page of {{ profile_user.first_name }}
         <span class="text-muted">#{{ profile_user.id }}</span>
     </h1>
-    <img src="{{ profile_user.profile.image.url }}" alt="Profile picture" class="rounded-circle" width="150" height="150">
+    
+    {% if profile_user.profile.image %}
+        <img src="{{ profile_user.profile.image.url }}" alt="Profile picture" class="rounded-circle" width="150" height="150">
+    {% else %}
+        <div class="rounded-circle bg-secondary d-flex align-items-center justify-content-center text-white" style="width: 150px; height: 150px;">
+            No Image
+        </div>
+    {% endif %}
 
     {% if user != profile_user %}
     <div class="my-3">
+        {# Check if messaging app is installed and url exists before using #}
         <a href="{% url 'messaging:chat' first_name=profile_user.first_name user_id=profile_user.id %}" class="btn btn-primary">
             Send Message
         </a>
     </div>
+    {% else %}
+        <div class="my-3">
+            <a href="{% url 'settings' %}" class="btn btn-secondary">Edit Profile / Settings</a>
+        </div>
     {% endif %}
 
     <div class="row py-3">
         <div class="col-3">
-            <div class="card p-2 text-center">
+            <div class="card p-2 text-center h-100">
                 <p class="fw-bold">Number of times they have recycled</p>
                 <div class="display-3">
                     {% if profile_user.profile.total_usage_count %}
                     <p>{{ profile_user.profile.total_usage_count }}</p>
                     {% else %}
-                    <p>N/A</p>
+                    <p>0</p>
                     {% endif %}
                 </div>
                 <p class="text-muted">Total uses of all recycling bins</p>
             </div>
         </div>
         <div class="col-3">
-            <div class="card p-2 text-center">
+            <div class="card p-2 text-center h-100">
                 <p class="fw-bold">Number of recycling bins used</p>
                 <div class="display-3">
                     {% if profile_user.profile.total_bins_used %}
                     <p>{{ profile_user.profile.total_bins_used }}</p>
                     {% else %}
-                    <p>N/A</p>
+                    <p>0</p>
                     {% endif %}
                 </div>
                 <p class="text-muted">Unique bins they've recycled at</p>
@@ -57,19 +69,16 @@
             </div>
         </div>
         <div class="col-3">
-            <div class="card p-2 text-center">
+            <div class="card p-2 text-center h-100">
                 <p class="fw-bold">Number of posted recycling bins</p>
                 <div class="display-3">
-                    {% if profile_user.profile.posted_bins_count %}
-                    <p>{{ profile_user.profile.posted_bins_count }}</p>
-                    {% else %}
-                    <p>N/A</p>
-                    {% endif %}
+                    <p>{{ profile_user.posted_bins.count }}</p>
                 </div>
                 <p class="text-muted">Bins they've added to the map</p>
             </div>
         </div>
     </div>
+
     <div class="row py-3">
         <div class="col-6">
             <div class="card p-3 h-100">
@@ -93,5 +102,41 @@
             </div>
         </div>
     </div>
-</div>
+
+    <div class="row py-3">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h4 class="fw-bold mb-0">Posted Recycling Bins</h4>
+                </div>
+                <div class="card-body p-0">
+                    {% if profile_user.posted_bins.all %}
+                        <div class="list-group list-group-flush">
+                            {% for bin in profile_user.posted_bins.all %}
+                                <a href="{% url 'recycling-bin-detail' bin.id %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h5 class="mb-1">{{ bin.name }}</h5>
+                                        <small class="text-muted">Posted on {{ bin.created_at|date:"M d, Y" }}</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-primary rounded-pill mb-1">
+                                            {{ bin.fullness_percentage|floatformat:0 }}% Full
+                                        </span>
+                                        <br>
+                                        <small class="text-muted">
+                                            <i class="bi bi-hand-thumbs-up"></i> {{ bin.upvote_count }}
+                                        </small>
+                                    </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="p-4 text-center text-muted">
+                            <p class="mb-0">No recycling bins posted yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
