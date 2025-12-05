@@ -9,4 +9,31 @@
         <button type="submit" class="btn btn-primary">Post Location</button>
     </form>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function (pos) {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+
+                // Auto-fill the Django form fields
+                let latInput = document.getElementById("id_latitude");
+                let lngInput = document.getElementById("id_longitude");
+
+                if (latInput && lngInput) {
+                    latInput.value = lat;
+                    lngInput.value = lng;
+                } else {
+                    console.warn("Latitude/Longitude fields not found in form.");
+                }
+            },
+            function (err) {
+                console.warn("Unable to get location:", err);
+            }
+        );
+    }
+});
+</script>
 {% endblock %}

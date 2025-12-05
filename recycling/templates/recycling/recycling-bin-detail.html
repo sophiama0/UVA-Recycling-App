@@ -62,6 +62,13 @@
         <p class="card-text text-muted small mb-0">
           Last updated by {{ bin.updated_by.username }} on {{ bin.updated_at|date:"M d, Y"|default:"No date found" }}
         </p>
+        {% if user.is_authenticated %}
+          {% if user.is_staff or user.is_superuser or user == bin.posted_by %}
+            <div class="mt-3">
+              <a href="{% url 'delete-bin' bin.id %}" class="btn btn-danger">Delete bin</a>
+            </div>
+          {% endif %}
+        {% endif %}
     </div>
   </div>
   {% if user.is_authenticated %}
