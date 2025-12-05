@@ -35,7 +35,9 @@ class RecyclingBinUpdateForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
 
-        if user and self.instance.posted_by != user:
+        # Allow admins (staff/superusers) to edit all fields
+        # Only restrict non-admin non-posters
+        if user and self.instance.posted_by != user and not (user.is_staff or user.is_superuser):
             for field in ['name', 'description', 'latitude', 'longitude', 'image']:
                 self.fields[field].disabled = True
 
