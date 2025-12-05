@@ -174,7 +174,7 @@ def update_recycling_location(request, pk):
     return render(request, 'recycling/update-recycling-location.html', {'form': form, 'bin': bin})
 
 
-@login_required
+# @login_required
 def profile(request, first_name, user_id):
     user_obj = get_object_or_404(User, id=user_id, first_name=first_name)
 
