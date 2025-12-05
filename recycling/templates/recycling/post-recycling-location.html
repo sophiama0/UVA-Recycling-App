@@ -16,8 +16,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             function (pos) {
-                const lat = pos.coords.latitude;
-                const lng = pos.coords.longitude;
+                let lat = pos.coords.latitude;
+                let lng = pos.coords.longitude;
+
+                // Trim to max 9 total digits with 6 decimal places
+                // This matches the model's DecimalField(max_digits=9, decimal_places=6)
+                lat = parseFloat(lat.toFixed(6));
+                lng = parseFloat(lng.toFixed(6));
 
                 // Auto-fill the Django form fields
                 let latInput = document.getElementById("id_latitude");
