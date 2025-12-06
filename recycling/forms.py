@@ -13,7 +13,7 @@ class RecyclingBinForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'latitude': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
             'longitude': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
-            'fullness': forms.NumberInput(attrs={'class': 'form-control', 'min': 0, 'max': 1, 'step': 0.01}),
+            'fullness': forms.NumberInput(attrs={'class': 'form-control', 'min': 0, 'max': 100, 'step': 1}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
@@ -27,7 +27,7 @@ class RecyclingBinUpdateForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
             'latitude': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
             'longitude': forms.NumberInput(attrs={'class': 'form-control', 'step': 'any'}),
-            'fullness': forms.NumberInput(attrs={'class': 'form-control', 'min': 0, 'max': 1, 'step': 0.01}),
+            'fullness': forms.NumberInput(attrs={'class': 'form-control', 'min': 0, 'max': 100, 'step': 1}),
             'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
