@@ -1,3 +1,4 @@
+from allauth.socialaccount.views import login_cancelled as allauth_login_cancelled
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -11,6 +12,9 @@ from .models import RecyclingBin, BinVote, BinUsage
 
 
 # Views
+def user_login_cancelled(request):
+    return redirect('/')
+
 def map_page(request):
     return render(request, "recycling/map.html")
 
