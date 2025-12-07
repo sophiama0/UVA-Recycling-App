@@ -51,12 +51,7 @@
                 // Move map to user location
                 map.setView([lat, lng], 16);
 
-                // Optional: show a marker for “You are here”
-                {#L.marker([lat, lng], { title: "Your Location" })#}
-                {#    .addTo(map)#}
-                {#    .bindPopup("You are here")#}
-                {#    .openPopup();#}
-                // Optional: show a red "You are here" marker
+
                 L.marker([lat, lng], {
                     title: "Your Location",
                     icon: redIcon

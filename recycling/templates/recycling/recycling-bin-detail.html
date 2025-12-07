@@ -91,7 +91,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
         bsAlert.close();
       } catch (e) {
-        // Fallback: remove from DOM
         alert.classList.remove('show');
         setTimeout(() => alert.remove(), 400);
       }

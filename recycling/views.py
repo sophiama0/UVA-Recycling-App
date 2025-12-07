@@ -10,7 +10,7 @@ from .forms import ProfileImageForm, RecyclingBinForm, RecyclingBinUpdateForm, U
 from .models import RecyclingBin, BinVote, BinUsage
 
 
-# Create your views here.
+# Views
 def map_page(request):
     return render(request, "recycling/map.html")
 
@@ -157,7 +157,7 @@ def delete_bin_confirm(request, pk):
         messages.success(request, f"{bin_name} has been deleted.")
         return redirect('recycling-map')
 
-    # GET: show confirmation page
+    # show confirmation page
     return render(request, 'recycling/delete-confirm.html', {'bin': bin})
 
 
@@ -197,7 +197,6 @@ def update_recycling_location(request, pk):
     return render(request, 'recycling/update-recycling-location.html', {'form': form, 'bin': bin})
 
 
-# @login_required
 def profile(request, first_name, user_id):
     user_obj = get_object_or_404(User, id=user_id, first_name=first_name)
 

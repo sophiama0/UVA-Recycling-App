@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db.models import Count
 
 
-# Create your models here.
+# Created models
 class RecyclingBin(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
