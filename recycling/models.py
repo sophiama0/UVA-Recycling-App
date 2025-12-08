@@ -10,7 +10,7 @@ class RecyclingBin(models.Model):
     description = models.TextField(blank=True)
     latitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.0)
     longitude = models.DecimalField(max_digits=9, decimal_places=6, default=0.0)
-    fullness = models.DecimalField(max_digits=3, decimal_places=0, validators=[MinValueValidator(0),MaxValueValidator(100)], default=0)
+    fullness = models.IntegerField(validators=[MinValueValidator(0),MaxValueValidator(100)], default=0)
     image = models.ImageField(upload_to='recycling_bin_pics/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='posted_bins')
