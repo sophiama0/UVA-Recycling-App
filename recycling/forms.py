@@ -77,8 +77,8 @@ class RecyclingFullnessForm(forms.Form):
     """Accepts fullness as a percentage (0-100)."""
     fullness_percent = forms.DecimalField(
         max_digits=5,
-        decimal_places=0,
+        decimal_places=2,
         min_value=0,
         max_value=100,
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': '1'})
+        widget=forms.NumberInput(attrs={'class': 'form-control', 'step': '0.1'})
     )
