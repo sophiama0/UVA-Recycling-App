@@ -128,7 +128,7 @@ def update_fullness_after_recycle(request, pk):
         if form.is_valid():
             pct = form.cleaned_data['fullness_percent']
             # convert percent to 0..1 decimal
-            bin.fullness = round((pct / 100), 2)
+            bin.fullness = pct #round((pct / 100), 2)
             bin.updated_by = request.user
             bin.save()
             messages.success(request, f"Fullness updated for {bin.name}.")
