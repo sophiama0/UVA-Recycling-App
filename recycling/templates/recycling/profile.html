@@ -18,7 +18,7 @@
     {% if user != profile_user %}
     <div class="my-3">
         {# Check if messaging app is installed and url exists before using #}
-        <a href="{% url 'messaging:chat' first_name=profile_user.first_name user_id=profile_user.id %}" class="btn btn-primary">
+        <a href="{% url 'messaging:chat' profile_user.first_name profile_user.id %}" class="btn btn-primary">
             Send Message
         </a>
     </div>
