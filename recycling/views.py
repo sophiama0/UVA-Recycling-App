@@ -136,7 +136,7 @@ def update_fullness_after_recycle(request, pk):
     else:
         # create a BinUsage record when the user arrives here (they indicated they recycled)
         BinUsage.objects.create(user=request.user, recycling_bin=bin)
-        initial_pct = bin.fullness * 100
+        initial_pct = bin.fullness
         form = RecyclingFullnessForm(initial={'fullness_percent': initial_pct})
 
     return render(request, 'recycling/update-fullness.html', {'form': form, 'bin': bin})
