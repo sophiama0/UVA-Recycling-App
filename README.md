@@ -21,20 +21,20 @@ git clone https://github.com/username/UVA-Recycling-App
 Make sure you cd into the project folder: cd project-b-04
 ```
 
-**To build the virtual environment**
+**To build the virtual environment**:
 
-Create virtual environment using venv
+Create virtual environment using venv:
 ```bash
 python -m venv venv
 ```
 
-Now activate
+Now activate:
 ```bash
 Windows: venv\Scripts\activate
 MacOS/Linux: source venv/bin/activate
 ```
 
-Make sure pip is installed
+Make sure pip is installed:
 ```bash
 pip install Django
 ```
@@ -45,4 +45,5 @@ python manage.py runserver
 ```
 
 Now navigate to the URL: http://127.0.0.1
+
 
